@@ -55,19 +55,6 @@ app.get('/query', (req, res) => {
 
         response.result = true
         response.message = "資料庫連接成功"
-        res.json(response)
-
-        db.collection('R05945023').insertMany(response.data, function(error, result) {
-            if (error) {
-                response.result = false
-                response.message = "資料新增失敗"
-                res.json(response)
-                return
-            }
-            response.result = true
-            response.message = "資料新增成功"
-            res.json(response)
-        })
 
         db.collection('R05945023').find().toArray((error, Data) => {
             if (error) {
@@ -79,6 +66,7 @@ app.get('/query', (req, res) => {
 
             response.result = true
             response.message = "資料庫查詢成功"
+            response.data = Data
             res.json(response)
         })
 
@@ -107,7 +95,6 @@ app.post('/insert', (req, res) => {
 
         response.result = true
         response.message = "資料庫連接成功"
-        res.json(response)
 
         db.collection('R05945023').insertOne(data, function(error, Data) {
             if (error) {
@@ -150,7 +137,6 @@ app.post('/update', function(req, res) {
 
         response.result = true
         response.message = "資料庫連接成功"
-        res.json(response)
 
         // TODO 作業二 - 更新資料
         // 將mongoDB資料中對應的 data.id 找出來，並更新其 name 和 price 資料
@@ -202,7 +188,6 @@ app.post('/delete', (req, res) => {
 
         response.result = true
         response.message = "資料庫連接成功"
-        res.json(response)
 
         // TODO 作業二 - 刪除資料
         // 將ID 的資料 從mongodb中刪除
