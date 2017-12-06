@@ -5,7 +5,7 @@ const app = express()
 const MongoClient = require('mongodb').MongoClient
 const objectID = require('mongodb').ObjectID; // 用來建構MongoDBID物件
 
-var url = 'mongodb://140.112.28.194:27017/CSX2003_01_HW2';
+var url = 'mongodb://140.112.28.194:27017/CSX2003_02_HW2';
 
 // 設定預設port為 1377，若系統環境有設定port值，則以系統環境為主
 app.set('port', (process.env.PORT || 1377))
@@ -76,6 +76,11 @@ app.get('/query', (req, res) => {
 
 //insert功能
 app.post('/insert', (req, res) => {
+    var response = {
+        result: true,
+        data: []
+    }
+
     var data = {
         name: req.body.name,
         price: req.body.price,
@@ -151,7 +156,7 @@ app.post('/update', function(req, res) {
             price: data.price
         }
 
-        db.collection('R05945023').updateOne(data, {filter, $set: update}, (error, result) => {
+        db.collection('R05945023').updateOne(filter, {$set: update}, (error, result) => {
             if (error) {
                 response.result = false
                 response.message = "更新資料失敗，" + error.message
@@ -197,15 +202,15 @@ app.post('/delete', (req, res) => {
         var filter = {
             _id: objectID(data._id)
         }
-
-        db.collection('R05945023').deleteOne(data, {filter}, (error, result) => {
+        console.log(data._id)
+        db.collection('R05945023').deleteOne(filter, (error, result) => {
             if (error) {
                 response.result = false
                 response.message = "刪除資料失敗" + error.message
                 res.json(response)
                 return
             }
-
+            console.log(result)
             response.result = true
             response.message = "刪除資料成功"
             res.json(response)
