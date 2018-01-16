@@ -5,7 +5,7 @@ const app = express()
 const MongoClient = require('mongodb').MongoClient
 const objectID = require('mongodb').ObjectID; // 用來建構MongoDBID物件
 
-var url = 'mongodb://140.112.28.194:27017/CSX2003_02_HW2';
+var url = 'mongodb://140.112.28.194:27017/CSX2003_02_01';
 
 // 設定預設port為 1377，若系統環境有設定port值，則以系統環境為主
 app.set('port', (process.env.PORT || 1377))
@@ -56,7 +56,7 @@ app.get('/query', (req, res) => {
         response.result = true
         response.message = "資料庫連接成功"
 
-        db.collection('R05945023').find().toArray((error, Data) => {
+        db.collection('database').find().toArray((error, Data) => {
             if (error) {
                 response.result = false
                 response.message = "資料庫查詢失敗，" + error.message
